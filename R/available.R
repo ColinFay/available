@@ -25,14 +25,18 @@
 #' available("survival")
 #' }
 #' @export
-available <- function(name, browse = getOption("available.browse", TRUE), ...) {
+available <- function(name, browse = getOption("available.browse", TRUE), ..., warn_offensive = TRUE) {
   res <- list(valid_package_name(name),
     available_on_cran(name, ...),
     available_on_bioc(name, ...),
     available_on_github(name))
   terms <- name_to_search_terms(name)
 
-  urban_dictonary <- check_urban()
+  if (warn_offensive){
+    urban_dictonary <- check_urban()
+  } else {
+    urban_dictonary <- TRUE
+  }
 
   res <- c(res,
     unlist(recursive = FALSE,
